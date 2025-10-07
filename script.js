@@ -522,3 +522,25 @@ document.addEventListener('DOMContentLoaded', function() {
   initBlogsSlider();
   initTestimonialsSlider();
 });
+
+
+// Script for counselling.html page
+function setEqualCardHeight() {
+    const cards = document.querySelectorAll(".expert-card");
+    let maxHeight = 0;
+
+    // reset height
+    cards.forEach(card => card.style.height = 'auto');
+
+    // find max height
+    cards.forEach(card => {
+        if(card.offsetHeight > maxHeight) maxHeight = card.offsetHeight;
+    });
+
+    // set all cards to max height
+    cards.forEach(card => card.style.height = maxHeight + "px");
+}
+
+// run on page load and window resize
+window.addEventListener("load", setEqualCardHeight);
+window.addEventListener("resize", setEqualCardHeight);
