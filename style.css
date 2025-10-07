@@ -2031,7 +2031,7 @@ background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255
 }
 
 /* Dynamic heading only on admission.html */
-.dynamic-heading {
+/* .dynamic-heading {
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 700;
   text-align: center;
@@ -2052,7 +2052,7 @@ background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255
 @keyframes bounceFade {
   0%, 100% { transform: translateY(0); opacity: 1; }
   50% { transform: translateY(-10px); opacity: 0.8; }
-}
+} */
 
 /* Events Page Slideshow Styles */
 .slideshow-container {
@@ -2105,11 +2105,414 @@ background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255
   content: "";
   position: absolute;
   inset: 0;
-  background: ;
+  /* background: ; */
   z-index: 1;
 }
 
 .admission-hero .container {
   position: relative;
   z-index: 2;
+}
+/* ===================== General Page Styles ===================== */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* light grey background */
+    color: #333;
+}
+/* Dynamic heading for counselling page */
+.dynamic-heading {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  text-align: center;
+  color: #0d61aa; /* fallback color */
+  background: linear-gradient(90deg, #0d61aa, #1e90ff); /* blue gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bounceFade 2s ease-in-out infinite;
+}
+
+.dynamic-subtext {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: #0d61aa; /* dark blue */
+  text-align: center;
+  margin-top: 10px;
+}
+
+@keyframes bounceFade {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-10px); opacity: 0.8; }
+}
+/* ===================== Card & Counselling Points Animation ===================== */
+.plan-card,
+.counselling-points li {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.plan-card.animate,
+.counselling-points li.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ===================== Counselling Section ===================== */
+.feature-section-5 {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.webinar-blue {
+    background-color: #fff;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 50px 30px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.section-heading p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 40px;
+}
+.section-heading h2{
+    color: #0d61aa;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+/* Counselling Points Columns */
+.row.counselling-points {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.row.counselling-points .col-md-6 {
+    text-align: left;
+}
+
+.row.counselling-points li {
+    margin-bottom: 15px;
+    line-height: 1.5;
+    list-style: none;
+    position: relative;
+    padding-left: 30px;
+}
+
+.row.counselling-points li i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #0d61aa;
+}
+
+/* Mobile responsiveness for Counselling points */
+@media (max-width: 768px) {
+    .row.counselling-points {
+        flex-direction: column;
+        align-items: center;
+    }
+    .row.counselling-points li {
+        padding-left: 25px;
+    }
+}
+/* Counselling Points Columns */
+/* ===================== Counselling Card ===================== */
+.webinar-blue {
+    background-color: #fff;
+    max-width: 1500px; /* wider card */
+    margin: 0 auto;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    padding: 60px 50px; /* more space inside */
+}
+
+.counselling-points {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    gap: 2rem;
+}
+
+.counselling-points .col-md-6 {
+    flex: 0 0 48%; /* two columns with some gap */
+}
+
+.counselling-points ul {
+    padding-left: 0;
+}
+
+.counselling-points li {
+    position: relative;
+    list-style: none;
+    padding-left: 35px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.counselling-points li i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2rem;
+    color: #0d61aa;
+}
+
+/* Right column alignment */
+.counselling-points .col-md-6.text-end li {
+    padding-left: 0;
+    padding-right: 35px;
+}
+
+.counselling-points .col-md-6.text-end li i {
+    left: auto;
+    right: 0;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.section-heading p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 45px;
+}
+
+/* ===================== Mobile Responsiveness ===================== */
+@media (max-width: 992px) {
+    .webinar-blue {
+        padding: 50px 30px;
+    }
+    .counselling-points .col-md-6 {
+        flex: 0 0 100%; /* stack columns on tablet */
+        text-align: left;
+    }
+    .counselling-points .col-md-6.text-end li {
+        padding-left: 35px;
+        padding-right: 0;
+    }
+    .counselling-points .col-md-6.text-end li i {
+        left: 0;
+        right: auto;
+    }
+}
+
+/* ===================== Plans Section ===================== */
+.plans-section {
+    padding: 4rem 1rem;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.plans-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0d61aa;
+    margin-bottom: 3rem;
+}
+
+.plans-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.plan-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    flex: 1 1 400px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.ribbon {
+    width: 140px;
+    height: 30px;
+    background: #ffc107;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    position: absolute;
+    top: 15px;
+    right: -15px;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+.plan-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d61aa;
+    margin-bottom: 1rem;
+}
+
+.price {
+    margin-bottom: 1rem;
+}
+
+.price .display-6 {
+    font-size: 2rem;
+}
+
+.bg-features {
+    background-color: #E9F9FF;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.plan-card ul {
+    list-style: none;
+    padding-left: 0;
+    flex-grow: 1;
+}
+
+.plan-card ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.plan-card ul li i {
+    color: #0d61aa;
+    margin-right: 10px;
+}
+
+.btn-best {
+    margin-top: auto;
+    padding: 10px 0;
+    font-weight: 600;
+    border-radius: 8px;
+    background-color: #0d61aa;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-best:hover {
+    background-color: #007bff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .plans-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+/* ===================== Experts / Team Section ===================== */
+.experts-section {
+    padding: 60px 1rem;
+    background-color: #fff;
+    text-align: center;
+}
+
+.experts-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.experts-section .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    align-items: stretch; /* stretch cards to same height */
+}
+
+.expert-card {
+    flex: 1 1 300px; /* responsive */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 25px 15px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+.expert-card:hover {
+    transform: translateY(-5px);
+}
+
+.expert-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+}
+
+.expert-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.expert-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.expert-title {
+    font-size: 0.95rem;
+    color: #0d61aa;
+}
+/* ===================== Expert Card Entrance Animation ===================== */
+.expert-card {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease-out;
+}
+
+.expert-card.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+    .expert-card {
+        max-width: 90%;
+    }
 }
