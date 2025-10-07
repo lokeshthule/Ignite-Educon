@@ -197,7 +197,7 @@ h1, h2, h3 {
 .hero {
   margin-top: 72px;
   position: relative;
-  height: 500px;
+  height: 600px;
   overflow: hidden;
   border-radius: 8px;
 }
@@ -1929,6 +1929,7 @@ background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255
 .btn-primary {
   background: #FFAC1C;
   color: var(--white);
+  border-radius: 8px;
 }
 
 .btn-primary::after {
