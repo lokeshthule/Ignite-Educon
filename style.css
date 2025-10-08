@@ -32,7 +32,7 @@ h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  color: #011F5B;
+  color: white;
 }
 
 h2, h3 {
@@ -660,6 +660,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   font-size: 2.5rem;
   position: relative;
   display: inline-block;
+  color: ;
 }
 
 .about h1::after {
