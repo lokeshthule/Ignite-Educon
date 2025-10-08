@@ -42,26 +42,27 @@ function showAdvisorySlides() {
 window.addEventListener("load", showAdvisorySlides);
 
 // --- Event Tabs Functionality (for events.html) ---
-
 // --- Function to check event count and toggle 'no-data' class ---
 function updateEventContainerState(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-
     // We check the event-card-list container inside the tab
+
     const eventList = container.querySelector('.event-card-list');
-    
     // Check how many actual event cards are present (assuming .event-card is the template)
-    // If the eventList container exists, count its children (the event cards).
+    // If the eventList container exists, count its children (the event cards)
+
     const eventCount = eventList ? eventList.querySelectorAll('.event-card').length : 0;
 
     if (eventCount === 0) {
         // If there are no event cards, add the 'no-data' class.
         // CSS will hide the empty event list and show the 'No Data' message.
+
         container.classList.add('no-data');
     } else {
         // If there are events, remove the 'no-data' class.
         // CSS will show the event list and hide the 'No Data' message.
+
         container.classList.remove('no-data');
     }
 }
@@ -85,7 +86,7 @@ function filterEvents(category) {
         selectedContent.classList.add('active');
         
         // **NEW INTEGRATION:** Check the content status after switching the tab
-        updateEventContainerState(category); 
+        updateEventContainerState(category);
     }
 
     // 4. Update the active state of the buttons
@@ -136,9 +137,10 @@ function initHeroSlideshow() {
   }, 3000);
 }
 
+
 // Social Media Section Sliders - COMPLETELY REWRITTEN
 function initSocialMediaSliders() {
-  console.log("🔄 Initializing social media sliders...");
+  console.log("Initializing social media sliders...");
   
   // Debug: Check if elements exist
   console.log("Reels track found:", document.querySelector('.reels-track'));
@@ -163,21 +165,21 @@ function initSocialMediaSliders() {
   
   // Reels slider functionality
   if (reelsTrack && reelsPrev && reelsNext) {
-    console.log("✅ Setting up reels slider...");
+    console.log("Setting up reels slider...");
     
     const reelItems = document.querySelectorAll('.reel-item');
     const reelWidth = 280 + 24; // width + gap
     const visibleReels = 4; // Number of reels visible at once
     
     reelsPrev.addEventListener('click', () => {
-      console.log("⬅️ Reels previous clicked");
+      console.log("Reels previous clicked");
       reelsPosition = Math.min(reelsPosition + (reelWidth * visibleReels), 0);
       reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
       console.log("New reels position:", reelsPosition);
     });
     
     reelsNext.addEventListener('click', () => {
-      console.log("➡️ Reels next clicked");
+      console.log("Reels next clicked");
       const maxPosition = -reelWidth * (reelItems.length - visibleReels);
       reelsPosition = Math.max(reelsPosition - (reelWidth * visibleReels), maxPosition);
       reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
@@ -187,26 +189,26 @@ function initSocialMediaSliders() {
     // Initialize position
     reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
   } else {
-    console.log("❌ Reels slider elements not found");
+    console.log("Reels slider elements not found");
   }
   
   // Podcasts slider functionality
   if (podcastsTrack && podcastsPrev && podcastsNext) {
-    console.log("✅ Setting up podcasts slider...");
+    console.log("Setting up podcasts slider...");
     
     const podcastItems = document.querySelectorAll('.podcast-item');
     const podcastWidth = 560 + 24; // width + gap
     const visiblePodcasts = 2; // Number of podcasts visible at once
     
     podcastsPrev.addEventListener('click', () => {
-      console.log("⬅️ Podcasts previous clicked");
+      console.log("Podcasts previous clicked");
       podcastsPosition = Math.min(podcastsPosition + (podcastWidth * visiblePodcasts), 0);
       podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
       console.log("New podcasts position:", podcastsPosition);
     });
     
     podcastsNext.addEventListener('click', () => {
-      console.log("➡️ Podcasts next clicked");
+      console.log("Podcasts next clicked");
       const maxPosition = -podcastWidth * (podcastItems.length - visiblePodcasts);
       podcastsPosition = Math.max(podcastsPosition - (podcastWidth * visiblePodcasts), maxPosition);
       podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
@@ -216,13 +218,13 @@ function initSocialMediaSliders() {
     // Initialize position
     podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
   } else {
-    console.log("❌ Podcasts slider elements not found");
+    console.log("Podcasts slider elements not found");
   }
 }
 
 // Initialize everything when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("📄 DOM fully loaded, initializing components...");
+  console.log("DOM fully loaded, initializing components...");
   initHeroSlideshow();
   initSocialMediaSliders();
 });
