@@ -28,11 +28,20 @@ body {
   background-color: #F0F8FF;
 }
 
-h1, h2, h3 {
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+h2, h3 {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   color: #011F5B;
+  font-size: 2rem;
 }
+
 
 /* Navbar */
 .navbar {
@@ -111,6 +120,7 @@ h1, h2, h3 {
   content: "\f00d";
 }
 
+
 /* Hamburger Menu (hidden on desktop) */
 .hamburger {
   display: none;
@@ -169,6 +179,7 @@ h1, h2, h3 {
   }
 }
 
+
 /* Responsive Footer Centering */
 @media (max-width: 768px) {
   .footer-container {
@@ -191,7 +202,6 @@ h1, h2, h3 {
   }
 }
 
-/* Add these styles to your CSS file */
 
 /* Hero Slideshow */
 .hero {
@@ -230,7 +240,7 @@ h1, h2, h3 {
 
 .hero-content {
   position: absolute;
-  bottom: 80px; /* Adjust this value to move the button up/down */
+  bottom: 80px; /* Adjust this value to move the button up & down */
   left: 0;
   right: 0;
   text-align: center;
@@ -589,7 +599,6 @@ h1, h2, h3 {
     height: auto;
   }
   
-
   .event-status-section {
     width: 100%;
     order: -1;
@@ -635,16 +644,16 @@ h1, h2, h3 {
 
 
 /* About Section */
-.about { 
-  padding: 4rem 2rem; 
-  max-width: 1000px; 
-  margin: 0 auto; 
-  text-align: center; 
-  color: #011F5B; 
+.about {
+  padding: 4rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  color: #011F5B;
 }
-  /* background: #eed9ae;
-  background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 255, 1) 60%); } */
 
+/* background: #eed9ae;
+background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 255, 1) 60%); } */
 
 .about h1 {
   margin-bottom: 1.5rem;
@@ -670,6 +679,7 @@ h1, h2, h3 {
   font-size: 1.2rem;
   font-family: poppins, sans-serif;
 }
+
 /* Timeline Container */
 .timeline {
   position: relative;
@@ -689,7 +699,6 @@ h1, h2, h3 {
   background: #ddd;
   border-radius: 2px;
 }
-
 
 /* Each Timeline Item */
 .timeline-item {
@@ -775,7 +784,6 @@ h1, h2, h3 {
 }
 
 
-
 /* Advisory Section */
 .advisory {
   padding: 4rem 2rem;
@@ -790,8 +798,6 @@ h1, h2, h3 {
 
 /* Slider wrapper */
 .advisory-slider { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
-
-
 
 /* Advisory Card */
 .advisory-card {
@@ -819,14 +825,14 @@ h1, h2, h3 {
 /* Advisory Image - make it circular */
 /* Advisory Image - larger circular */
 .advisory-card img {
-  width: 220px;       /* increase size */
-  height: 180px;      /* keep square for circle */
+  width: 220px; /* increase size */
+  height: 180px; /* keep square for circle */
   object-fit: cover;
   border-radius: 8%; /* circular image */
   margin: 1.5rem auto 1rem; /* center the image with spacing */
   display: block;
   border: 3px solid #FFAC1C;
-   /* optional brand-colored border */
+  /* optional brand-colored border */
 }
 
 
@@ -1088,7 +1094,7 @@ h1, h2, h3 {
 
 .slide-btn:hover {
   background: #FFAC1C;
-background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255, 0) 70%);
+  background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255, 0) 70%);
   /*box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);*/
   transform: translateY(-50%) scale(1.1);
 }
