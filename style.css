@@ -660,7 +660,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   font-size: 2.5rem;
   position: relative;
   display: inline-block;
-  color: ;
+  color: #011F5B ;
 }
 
 .about h1::after {
