@@ -1402,13 +1402,13 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 }
 
 .blog-image {
-  flex: 0 0 180px; /* Keep wide for big image */
+  flex: 0 0 200px; /* Keep wide for big image */
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem; /* Added padding for spacing */
 }
 
 .blog-image img {
@@ -1426,7 +1426,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 
 .blog-content {
   flex: 1;
-  padding: 1rem; /* Reduced padding */
+  padding: 2rem; /* Reduced padding */
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -2362,20 +2362,59 @@ body {
 }
 
 .ribbon {
-    width: 140px;
-    height: 30px;
-    background: #ffc107;
-    color: #000;
-    font-weight: bold;
-    text-align: center;
-    line-height: 30px;
-    position: absolute;
-    top: 15px;
-    right: -15px;
-    transform: rotate(45deg);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    z-index: 2;
+  position: absolute;
+  top: 18px;
+  right: -45px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #ffb300, #ff9800);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  text-align: center;
+  line-height: 34px;
+  width: 160px;
+  height: 34px;
+  letter-spacing: 1px;
+  z-index: 10;
+  position: absolute;
 }
+
+/* Inner triangular cuts */
+.ribbon::before,
+.ribbon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.ribbon::before {
+  left: 0;
+  border-width: 18px 0 17px 10px;
+  border-color: transparent transparent transparent #f8f9fa; /* subtle light cut */
+  transform: translateX(-0px);
+}
+
+.ribbon::after {
+  right: 0;
+  border-width: 17px 10px 18px 0;
+  border-color: transparent #f8f9fa transparent transparent; /* subtle light cut */
+  transform: translateX(0px);
+}
+
+/* Glossy shine for realism */
+.ribbon span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 
 .plan-card h3 {
     font-size: 1.5rem;
