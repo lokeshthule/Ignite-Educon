@@ -1145,8 +1145,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 }
 
 .slide-btn:hover {
-  background: #FFAC1C;
-  background: radial-gradient(circle, rgba(255, 172, 28, 1) 0%, rgba(240, 248, 255, 0) 70%);
+  background: transparent;
   /*box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);*/
   transform: translateY(-50%) scale(1.1);
 }
