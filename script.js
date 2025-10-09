@@ -17,7 +17,6 @@ if (hamburger && navLinks) {
   });
 }
 
-
 // --- Advisory Board Slideshow (for about.html) ---
 let slideIndex = 0;
 
@@ -546,3 +545,57 @@ function setEqualCardHeight() {
 // run on page load and window resize
 window.addEventListener("load", setEqualCardHeight);
 window.addEventListener("resize", setEqualCardHeight);
+
+
+// Scroll Animation
+ document.addEventListener("DOMContentLoaded", () => {
+  const planCards = document.querySelectorAll(".plan-card");
+  const points = document.querySelectorAll(".counselling-points li");
+  const expertCards = document.querySelectorAll(".expert-card");
+  const timelineItems = document.querySelectorAll(".timeline-item"); // 👈 Added
+  const aboutp= document.querySelectorAll(".about p"); // 👈 Added
+
+
+  // Helper function to check if element is in viewport
+  function isInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return rect.top <= window.innerHeight * 0.85; // 85% visible
+  }
+
+  // Animate elements on scroll
+  function animateOnScroll() {
+    planCards.forEach((card, index) => {
+      if (isInViewport(card) && !card.classList.contains("animate")) {
+        setTimeout(() => card.classList.add("animate"), index * 200);
+      }
+    });
+
+    points.forEach((point, index) => {
+      if (isInViewport(point) && !point.classList.contains("animate")) {
+        setTimeout(() => point.classList.add("animate"), index * 150);
+      }
+    });
+
+    expertCards.forEach((card, index) => {
+      if (isInViewport(card) && !card.classList.contains("animate")) {
+        setTimeout(() => card.classList.add("animate"), index * 200);
+      }
+    });
+    
+    aboutp.forEach((item, index) => {
+       if (isInViewport(item) && !item.classList.contains("animate")) {
+         setTimeout(() => item.classList.add("animate"), index * 200);
+     }
+});
+    timelineItems.forEach((item, index) => {
+       if (isInViewport(item) && !item.classList.contains("animate")) {
+         setTimeout(() => item.classList.add("animate"), index * 200);
+     }
+});
+
+  }
+
+  // Trigger animation once on first scroll
+  window.addEventListener("scroll", animateOnScroll);
+  animateOnScroll(); // Trigger on load in case already in viewport
+});
