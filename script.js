@@ -17,7 +17,6 @@ if (hamburger && navLinks) {
   });
 }
 
-
 // --- Advisory Board Slideshow (for about.html) ---
 let slideIndex = 0;
 
