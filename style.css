@@ -92,21 +92,23 @@ h2, h3 {
 }
 
 .nav-links a {
-  color: #011F5B;
+  color: #011F5B; /* default desktop color */
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background 0.3s ease;
   font-family: poppins, sans-serif;
 }
 
+/* Desktop hover effect */
 .nav-links a:hover,
-.nav-links a .active {
-  background-color: var(--accent);
-  color: #000;
+.nav-links a.active {
+  color: #FF9933; /* saffron on hover/active */
+  background: none;
 }
 
+/* Hamburger button */
 .hamburger {
   display: none;
   background: none;
@@ -120,19 +122,7 @@ h2, h3 {
   content: "\f00d";
 }
 
-
-/* Hamburger Menu (hidden on desktop) */
-.hamburger {
-  display: none;
-  font-size: 1.8rem;
-  background: none;
-  border: none;
-  color: #011F5B;
-  cursor: pointer;
-  z-index: 1001;
-}
-
-/* Show hamburger and hide links on mobile */
+/* --- Mobile view --- */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -141,41 +131,59 @@ h2, h3 {
     right: 20px;
     transform: translateY(-50%);
     font-size: 26px;
-    background: none;
-    border: none;
     color: var(--blue);
-    cursor: pointer;
   }
 
   .nav-links {
-    display: none;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 280px;
+    background: #fff;
     flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    min-width: max-content;
-    background: #FFAC1C;
-    padding: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    gap: 0.5rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 2rem 1.5rem;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+    transition: right 0.4s ease;
     z-index: 1000;
   }
+
   .nav-links.active {
-    display: flex;
+    right: 0;
   }
+
+  .nav-links li {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
   .nav-links li a {
-    display: block;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    transition: background 0.3s;
-    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    text-decoration: none;
+    color: #004aad; /* mobile default color */
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: color 0.3s ease, background 0.3s ease;
   }
+
+  /* Hover / tap effect for mobile */
   .nav-links li a:hover,
+  .nav-links li a:focus,
+  .nav-links li a:active {
+    color: #FF9933; /* saffron */
+    background: none;
+  }
+
+  /* Active link (if you keep a class after click) */
   .nav-links li a.active {
-    background-color: var(--accent);
-    color: #000;
+    color: #FF9933;
   }
 }
 
