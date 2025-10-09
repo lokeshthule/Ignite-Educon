@@ -701,8 +701,8 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 .timeline::before {
   content: '';
   position: absolute;
-  top: 40px;   /* adjust to match the dot center */
-  bottom: 46px; /* so it ends at last dot */
+  top: 50px;   /* adjust to match the dot center */
+  bottom:60px; /* so it ends at last dot */
   left: 30px;
   width: 4px;
   background: #ddd;
@@ -713,11 +713,25 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 .timeline-item {
   position: relative;
   padding: 20px 20px 20px 80px; /* left padding leaves space for dot */
+  
   margin: 20px 0;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+/* Inner content centering */
+.timeline-content {
+  text-align: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+/* Optional: make list look nice and centered */
+.timeline-content ul {
+  display: inline-block; /* centers list itself */
+  text-align: left; /* keeps list items readable */
+  margin-top: 10px;
 }
 
 /* Hover effect */
@@ -747,6 +761,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   font-size: 1.4rem;
   color: #ff6b00;
   font-weight: 600;
+  text-align: center;
 }
 
 /* Timeline Paragraphs */
@@ -754,6 +769,8 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   margin: 5px 0;
   color: #444;
   line-height: 1.6;
+  
+
 }
 
 /* Timeline List (Trusted Colleges) */
@@ -780,15 +797,40 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 }
 
 /* Responsive adjustments */
-@media (max-width: 1024px) {
-  .timeline-item ul {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
-  }
-}
+/* === Mobile View (Up to 768px) === */
+@media (max-width: 768px) {
 
-@media (max-width: 600px) {
-  .timeline-item ul {
-    grid-template-columns: 1fr; /* 1 column for mobile */
+  /* Center the vertical line */
+  .timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Timeline item adjustments */
+  .timeline-item {
+    padding: 20px;
+    margin: 40px 0;
+  }
+
+  /* Move dot to top center */
+  .timeline-item::before {
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+  }
+
+  /* Center all content below the dot */
+  .timeline-content {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Make lists fit nicely */
+  .timeline-content ul {
+    display: block;
+    text-align: left;
+    margin: 0 auto;
+    width: 90%;
   }
 }
 
@@ -2160,19 +2202,6 @@ body {
   0%, 100% { transform: translateY(0); opacity: 1; }
   50% { transform: translateY(-10px); opacity: 0.8; }
 }
-/* ===================== Card & Counselling Points Animation ===================== */
-.plan-card,
-.counselling-points li {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
-}
-
-.plan-card.animate,
-.counselling-points li.animate {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 
 /* ===================== Counselling Section ===================== */
@@ -2514,21 +2543,32 @@ body {
     font-size: 0.95rem;
     color: #0d61aa;
 }
-/* ===================== Expert Card Entrance Animation ===================== */
-.expert-card {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.6s ease-out;
-}
 
-.expert-card.animate {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* ===================== Responsive ===================== */
 @media (max-width: 768px) {
     .expert-card {
         max-width: 90%;
     }
+}
+/* =====================  About & Counselling Animation ===================== */
+.plan-card,
+.counselling-points li,
+.expert-card,
+.about p,
+.timeline-item /* konal animation lavaych asen tr , deun tumcya card ch naav dya ex:-.plain*/
+ {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.plan-card.animate,
+.counselling-points li.animate ,
+.expert-card.animate,
+.about p.animate,
+.timeline-item.animate
+{
+  opacity: 1;
+  transform: translateY(0);
 }
