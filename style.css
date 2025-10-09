@@ -152,6 +152,7 @@ h2, h3 {
 
   .nav-links.active {
     right: 0;
+    border-radius: 10px;
   }
 
   .nav-links li {
@@ -751,7 +752,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   background: #ff6b00;
   border: 3px solid #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px #ddd;
+  box-shadow: 0 0 0 2px #FFAC1C;
   transform: translateX(-50%); /* center dot on line */
 }
 
@@ -2171,12 +2172,14 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   position: relative;
   z-index: 2;
 }
+
+
 /* ===================== General Page Styles ===================== */
 body {
     font-family: 'Poppins', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa; /* light grey background */
+    background-color: #F0F8FF;; /* light grey background */
     color: #333;
 }
 /* Dynamic heading for counselling page */
@@ -2206,7 +2209,7 @@ body {
 
 /* ===================== Counselling Section ===================== */
 .feature-section-5 {
-    padding: 4rem 1rem;
+    padding: 5rem 1rem;
     text-align: center;
 }
 
@@ -2363,7 +2366,7 @@ body {
 /* ===================== Plans Section ===================== */
 .plans-section {
     padding: 4rem 1rem;
-    background-color: #f8f9fa;
+    background-color: #F0F8FF;
     text-align: center;
 }
 
@@ -2432,14 +2435,14 @@ body {
 .ribbon::before {
   left: 0;
   border-width: 18px 0 17px 10px;
-  border-color: transparent transparent transparent #f8f9fa; /* subtle light cut */
+  border-color: transparent transparent transparent #F0F8FF; /* subtle light cut */
   transform: translateX(-0px);
 }
 
 .ribbon::after {
   right: 0;
   border-width: 17px 10px 18px 0;
-  border-color: transparent #f8f9fa transparent transparent; /* subtle light cut */
+  border-color: transparent #F0F8FF transparent transparent; /* subtle light cut */
   transform: translateX(0px);
 }
 
@@ -2452,7 +2455,6 @@ body {
   height: 50%;
   background: rgba(255, 255, 255, 0.2);
 }
-
 
 .plan-card h3 {
     font-size: 1.5rem;
@@ -2521,7 +2523,7 @@ body {
 /* ===================== Experts / Team Section ===================== */
 .experts-section {
     padding: 60px 1rem;
-    background-color: #fff;
+    background-color: #F0F8FF;
     text-align: center;
 }
 
@@ -2564,6 +2566,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #e0e0e0;
+    border: 3px solid #FFAC1C;
 }
 
 .expert-avatar img {
