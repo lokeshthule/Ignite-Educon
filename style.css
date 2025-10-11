@@ -2598,7 +2598,7 @@ body {
 .expert-card,
 .about p,
 .timeline-item /* konal animation lavaych asen tr , deun tumcya card ch naav dya ex:-.plain*/
- {
+{
   opacity: 0;
   transform: translateY(50px);
   transition: transform 0.6s ease-out, opacity 0.6s ease-out;
