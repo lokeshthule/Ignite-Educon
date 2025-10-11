@@ -137,7 +137,7 @@ function initHeroSlideshow() {
 }
 
 
-// ===== SOCIAL MEDIA SECTION AUTO-SCROLL WITH TOUCH SUPPORT ===== //
+// ===== SOCIAL MEDIA SECTION AUTO-SCROLL WITH PROPER TOUCH SUPPORT =====
 function initSocialMediaSliders() {
   console.log("Initializing social media sliders...");
   
@@ -158,13 +158,13 @@ function initSocialMediaSliders() {
   
   // Touch state variables
   let isReelsDragging = false;
-  let reelsStartPos = 0;
-  let reelsPrevTranslate = 0;
+  let reelsStartX = 0;
+  let reelsCurrentX = 0;
   
   let isPodcastsDragging = false;
-  let podcastsStartPos = 0;
-  let podcastsPrevTranslate = 0;
-  
+  let podcastsStartX = 0;
+  let podcastsCurrentX = 0;
+
   // Reels slider functionality
   if (reelsTrack && reelsPrev && reelsNext) {
     console.log("Setting up reels slider...");
@@ -182,7 +182,6 @@ function initSocialMediaSliders() {
       }
       
       reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-      reelsPrevTranslate = reelsPosition;
       resetReelsAutoSlide();
     }
     
@@ -198,7 +197,6 @@ function initSocialMediaSliders() {
           }
           
           reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-          reelsPrevTranslate = reelsPosition;
         }
       }, 3000); // 3 seconds
     }
@@ -207,42 +205,59 @@ function initSocialMediaSliders() {
       clearInterval(reelsAutoSlide);
       startReelsAutoSlide();
     }
-    
-    // Touch/Mouse Events for Reels
-    function reelsTouchStart(e) {
+
+    // Touch events for Reels
+    function handleReelsTouchStart(e) {
       isReelsDragging = true;
-      reelsStartPos = getPositionX(e);
-      reelsTrack.style.cursor = 'grabbing';
+      reelsStartX = getPositionX(e);
       reelsTrack.style.transition = 'none';
       resetReelsAutoSlide();
+      e.preventDefault();
     }
-    
-    function reelsTouchMove(e) {
+
+    function handleReelsTouchMove(e) {
       if (!isReelsDragging) return;
-      const currentPosition = getPositionX(e);
-      const diff = currentPosition - reelsStartPos;
-      reelsPosition = reelsPrevTranslate + diff;
-      reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-    }
-    
-    function reelsTouchEnd() {
-      if (!isReelsDragging) return;
-      isReelsDragging = false;
-      reelsTrack.style.cursor = 'grab';
-      reelsTrack.style.transition = 'transform 0.5s ease';
       
-      const movedBy = reelsPosition - reelsPrevTranslate;
+      reelsCurrentX = getPositionX(e);
+      const diff = reelsCurrentX - reelsStartX;
+      const newPosition = reelsPosition + diff;
       
-      if (movedBy < -50) {
-        // Swipe left - next
-        moveReelsSlide('next');
-      } else if (movedBy > 50) {
-        // Swipe right - previous
-        moveReelsSlide('prev');
+      // Calculate bounds
+      const maxPosition = 0;
+      const minPosition = -reelWidth * (reelItems.length - visibleReels);
+      
+      // Apply bounds
+      if (newPosition > maxPosition) {
+        reelsTrack.style.transform = `translateX(${maxPosition}px)`;
+      } else if (newPosition < minPosition) {
+        reelsTrack.style.transform = `translateX(${minPosition}px)`;
       } else {
-        // Return to original position
-        reelsTrack.style.transform = `translateX(${reelsPrevTranslate}px)`;
-        reelsPosition = reelsPrevTranslate;
+        reelsTrack.style.transform = `translateX(${newPosition}px)`;
+      }
+      
+      e.preventDefault();
+    }
+
+    function handleReelsTouchEnd(e) {
+      if (!isReelsDragging) return;
+      
+      isReelsDragging = false;
+      reelsTrack.style.transition = 'transform 0.3s ease';
+      
+      const diff = reelsCurrentX - reelsStartX;
+      const swipeThreshold = 50; // Minimum swipe distance
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // Swiped right - go to previous
+          moveReelsSlide('prev');
+        } else {
+          // Swiped left - go to next
+          moveReelsSlide('next');
+        }
+      } else {
+        // Not enough swipe, return to current position
+        reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
       }
     }
     
@@ -258,19 +273,17 @@ function initSocialMediaSliders() {
     });
     
     // Touch events for Reels
-    reelsTrack.addEventListener('mousedown', reelsTouchStart);
-    reelsTrack.addEventListener('touchstart', reelsTouchStart);
+    reelsTrack.addEventListener('touchstart', handleReelsTouchStart, { passive: false });
+    reelsTrack.addEventListener('touchmove', handleReelsTouchMove, { passive: false });
+    reelsTrack.addEventListener('touchend', handleReelsTouchEnd);
     
-    reelsTrack.addEventListener('mousemove', reelsTouchMove);
-    reelsTrack.addEventListener('touchmove', reelsTouchMove);
-    
-    reelsTrack.addEventListener('mouseup', reelsTouchEnd);
-    reelsTrack.addEventListener('mouseleave', reelsTouchEnd);
-    reelsTrack.addEventListener('touchend', reelsTouchEnd);
+    // Mouse events for desktop
+    reelsTrack.addEventListener('mousedown', handleReelsTouchStart);
+    document.addEventListener('mousemove', handleReelsTouchMove);
+    document.addEventListener('mouseup', handleReelsTouchEnd);
     
     // Initialize position and start auto-slide
     reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-    reelsPrevTranslate = reelsPosition;
     startReelsAutoSlide();
   } else {
     console.log("Reels slider elements not found");
@@ -293,7 +306,6 @@ function initSocialMediaSliders() {
       }
       
       podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-      podcastsPrevTranslate = podcastsPosition;
       resetPodcastsAutoSlide();
     }
     
@@ -309,7 +321,6 @@ function initSocialMediaSliders() {
           }
           
           podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-          podcastsPrevTranslate = podcastsPosition;
         }
       }, 3000); // 3 seconds
     }
@@ -318,42 +329,59 @@ function initSocialMediaSliders() {
       clearInterval(podcastsAutoSlide);
       startPodcastsAutoSlide();
     }
-    
-    // Touch/Mouse Events for Podcasts
-    function podcastsTouchStart(e) {
+
+    // Touch events for Podcasts
+    function handlePodcastsTouchStart(e) {
       isPodcastsDragging = true;
-      podcastsStartPos = getPositionX(e);
-      podcastsTrack.style.cursor = 'grabbing';
+      podcastsStartX = getPositionX(e);
       podcastsTrack.style.transition = 'none';
       resetPodcastsAutoSlide();
+      e.preventDefault();
     }
-    
-    function podcastsTouchMove(e) {
+
+    function handlePodcastsTouchMove(e) {
       if (!isPodcastsDragging) return;
-      const currentPosition = getPositionX(e);
-      const diff = currentPosition - podcastsStartPos;
-      podcastsPosition = podcastsPrevTranslate + diff;
-      podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-    }
-    
-    function podcastsTouchEnd() {
-      if (!isPodcastsDragging) return;
-      isPodcastsDragging = false;
-      podcastsTrack.style.cursor = 'grab';
-      podcastsTrack.style.transition = 'transform 0.5s ease';
       
-      const movedBy = podcastsPosition - podcastsPrevTranslate;
+      podcastsCurrentX = getPositionX(e);
+      const diff = podcastsCurrentX - podcastsStartX;
+      const newPosition = podcastsPosition + diff;
       
-      if (movedBy < -50) {
-        // Swipe left - next
-        movePodcastsSlide('next');
-      } else if (movedBy > 50) {
-        // Swipe right - previous
-        movePodcastsSlide('prev');
+      // Calculate bounds
+      const maxPosition = 0;
+      const minPosition = -podcastWidth * (podcastItems.length - visiblePodcasts);
+      
+      // Apply bounds
+      if (newPosition > maxPosition) {
+        podcastsTrack.style.transform = `translateX(${maxPosition}px)`;
+      } else if (newPosition < minPosition) {
+        podcastsTrack.style.transform = `translateX(${minPosition}px)`;
       } else {
-        // Return to original position
-        podcastsTrack.style.transform = `translateX(${podcastsPrevTranslate}px)`;
-        podcastsPosition = podcastsPrevTranslate;
+        podcastsTrack.style.transform = `translateX(${newPosition}px)`;
+      }
+      
+      e.preventDefault();
+    }
+
+    function handlePodcastsTouchEnd(e) {
+      if (!isPodcastsDragging) return;
+      
+      isPodcastsDragging = false;
+      podcastsTrack.style.transition = 'transform 0.3s ease';
+      
+      const diff = podcastsCurrentX - podcastsStartX;
+      const swipeThreshold = 50; // Minimum swipe distance
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // Swiped right - go to previous
+          movePodcastsSlide('prev');
+        } else {
+          // Swiped left - go to next
+          movePodcastsSlide('next');
+        }
+      } else {
+        // Not enough swipe, return to current position
+        podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
       }
     }
     
@@ -369,19 +397,17 @@ function initSocialMediaSliders() {
     });
     
     // Touch events for Podcasts
-    podcastsTrack.addEventListener('mousedown', podcastsTouchStart);
-    podcastsTrack.addEventListener('touchstart', podcastsTouchStart);
+    podcastsTrack.addEventListener('touchstart', handlePodcastsTouchStart, { passive: false });
+    podcastsTrack.addEventListener('touchmove', handlePodcastsTouchMove, { passive: false });
+    podcastsTrack.addEventListener('touchend', handlePodcastsTouchEnd);
     
-    podcastsTrack.addEventListener('mousemove', podcastsTouchMove);
-    podcastsTrack.addEventListener('touchmove', podcastsTouchMove);
-    
-    podcastsTrack.addEventListener('mouseup', podcastsTouchEnd);
-    podcastsTrack.addEventListener('mouseleave', podcastsTouchEnd);
-    podcastsTrack.addEventListener('touchend', podcastsTouchEnd);
+    // Mouse events for desktop
+    podcastsTrack.addEventListener('mousedown', handlePodcastsTouchStart);
+    document.addEventListener('mousemove', handlePodcastsTouchMove);
+    document.addEventListener('mouseup', handlePodcastsTouchEnd);
     
     // Initialize position and start auto-slide
     podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-    podcastsPrevTranslate = podcastsPosition;
     startPodcastsAutoSlide();
   } else {
     console.log("Podcasts slider elements not found");
@@ -389,7 +415,11 @@ function initSocialMediaSliders() {
   
   // Helper function to get position
   function getPositionX(e) {
-    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    if (e.type.includes('touch')) {
+      return e.touches[0].clientX;
+    } else {
+      return e.clientX;
+    }
   }
 }
 
