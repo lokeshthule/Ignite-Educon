@@ -1213,6 +1213,56 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
     height: 141px;
   }
 }
+/* Social Media Section Touch Improvements */
+.reels-container,
+.podcasts-container {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.reels-track,
+.podcasts-track {
+  display: flex;
+  transition: transform 0.3s ease;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  will-change: transform;
+}
+
+.reels-track:active,
+.podcasts-track:active {
+  cursor: grabbing;
+}
+
+.reel-item,
+.podcast-item {
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Ensure iframes don't interfere with touch */
+.reel-item iframe,
+.podcast-item iframe {
+  pointer-events: none;
+}
+
+.reels-track:hover .reel-item iframe,
+.podcasts-track:hover .podcast-item iframe {
+  pointer-events: auto;
+}
+
+/* Slide buttons styling */
+.slide-btn {
+  z-index: 20;
+  pointer-events: auto;
+}
 
 
 /* ===== BLOGS SECTION ===== */

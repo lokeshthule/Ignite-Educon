@@ -137,290 +137,298 @@ function initHeroSlideshow() {
 }
 
 
-// ===== SOCIAL MEDIA SECTION AUTO-SCROLL WITH PROPER TOUCH SUPPORT =====
+// ===== SOCIAL MEDIA SECTION - FIXED END POSITION =====
 function initSocialMediaSliders() {
   console.log("Initializing social media sliders...");
   
   // Reels Slider
+  const reelsContainer = document.querySelector('.reels-container');
   const reelsTrack = document.querySelector('.reels-track');
   const reelsPrev = document.querySelector('.reels-prev');
   const reelsNext = document.querySelector('.reels-next');
   
   // Podcasts Slider
+  const podcastsContainer = document.querySelector('.podcasts-container');
   const podcastsTrack = document.querySelector('.podcasts-track');
   const podcastsPrev = document.querySelector('.podcasts-prev');
   const podcastsNext = document.querySelector('.podcasts-next');
   
-  let reelsPosition = 0;
-  let podcastsPosition = 0;
-  let reelsAutoSlide;
-  let podcastsAutoSlide;
-  
-  // Touch state variables
-  let isReelsDragging = false;
-  let reelsStartX = 0;
-  let reelsCurrentX = 0;
-  
-  let isPodcastsDragging = false;
-  let podcastsStartX = 0;
-  let podcastsCurrentX = 0;
-
-  // Reels slider functionality
+  // Initialize if elements exist
   if (reelsTrack && reelsPrev && reelsNext) {
-    console.log("Setting up reels slider...");
-    
-    const reelItems = document.querySelectorAll('.reel-item');
-    const reelWidth = 280 + 24; // width + gap
-    const visibleReels = 4; // Number of reels visible at once
-    
-    function moveReelsSlide(direction) {
-      if (direction === 'next') {
-        const maxPosition = -reelWidth * (reelItems.length - visibleReels);
-        reelsPosition = Math.max(reelsPosition - (reelWidth * visibleReels), maxPosition);
-      } else {
-        reelsPosition = Math.min(reelsPosition + (reelWidth * visibleReels), 0);
-      }
-      
-      reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-      resetReelsAutoSlide();
-    }
-    
-    function startReelsAutoSlide() {
-      reelsAutoSlide = setInterval(() => {
-        if (!isReelsDragging) { // Don't auto-slide while dragging
-          const maxPosition = -reelWidth * (reelItems.length - visibleReels);
-          
-          if (reelsPosition <= maxPosition) {
-            reelsPosition = 0; // Reset to start
-          } else {
-            reelsPosition = Math.max(reelsPosition - (reelWidth * visibleReels), maxPosition);
-          }
-          
-          reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-        }
-      }, 3000); // 3 seconds
-    }
-    
-    function resetReelsAutoSlide() {
-      clearInterval(reelsAutoSlide);
-      startReelsAutoSlide();
-    }
-
-    // Touch events for Reels
-    function handleReelsTouchStart(e) {
-      isReelsDragging = true;
-      reelsStartX = getPositionX(e);
-      reelsTrack.style.transition = 'none';
-      resetReelsAutoSlide();
-      e.preventDefault();
-    }
-
-    function handleReelsTouchMove(e) {
-      if (!isReelsDragging) return;
-      
-      reelsCurrentX = getPositionX(e);
-      const diff = reelsCurrentX - reelsStartX;
-      const newPosition = reelsPosition + diff;
-      
-      // Calculate bounds
-      const maxPosition = 0;
-      const minPosition = -reelWidth * (reelItems.length - visibleReels);
-      
-      // Apply bounds
-      if (newPosition > maxPosition) {
-        reelsTrack.style.transform = `translateX(${maxPosition}px)`;
-      } else if (newPosition < minPosition) {
-        reelsTrack.style.transform = `translateX(${minPosition}px)`;
-      } else {
-        reelsTrack.style.transform = `translateX(${newPosition}px)`;
-      }
-      
-      e.preventDefault();
-    }
-
-    function handleReelsTouchEnd(e) {
-      if (!isReelsDragging) return;
-      
-      isReelsDragging = false;
-      reelsTrack.style.transition = 'transform 0.3s ease';
-      
-      const diff = reelsCurrentX - reelsStartX;
-      const swipeThreshold = 50; // Minimum swipe distance
-      
-      if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-          // Swiped right - go to previous
-          moveReelsSlide('prev');
-        } else {
-          // Swiped left - go to next
-          moveReelsSlide('next');
-        }
-      } else {
-        // Not enough swipe, return to current position
-        reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-      }
-    }
-    
-    // Event Listeners for Reels
-    reelsPrev.addEventListener('click', () => {
-      console.log("Reels previous clicked");
-      moveReelsSlide('prev');
+    initSlider({
+      track: reelsTrack,
+      prevBtn: reelsPrev,
+      nextBtn: reelsNext,
+      container: reelsContainer,
+      itemSelector: '.reel-item',
+      itemWidth: 280,
+      gap: 24,
+      visibleItems: { desktop: 4, tablet: 2, mobile: 1 }
     });
-    
-    reelsNext.addEventListener('click', () => {
-      console.log("Reels next clicked");
-      moveReelsSlide('next');
-    });
-    
-    // Touch events for Reels
-    reelsTrack.addEventListener('touchstart', handleReelsTouchStart, { passive: false });
-    reelsTrack.addEventListener('touchmove', handleReelsTouchMove, { passive: false });
-    reelsTrack.addEventListener('touchend', handleReelsTouchEnd);
-    
-    // Mouse events for desktop
-    reelsTrack.addEventListener('mousedown', handleReelsTouchStart);
-    document.addEventListener('mousemove', handleReelsTouchMove);
-    document.addEventListener('mouseup', handleReelsTouchEnd);
-    
-    // Initialize position and start auto-slide
-    reelsTrack.style.transform = `translateX(${reelsPosition}px)`;
-    startReelsAutoSlide();
-  } else {
-    console.log("Reels slider elements not found");
   }
   
-  // Podcasts slider functionality
   if (podcastsTrack && podcastsPrev && podcastsNext) {
-    console.log("Setting up podcasts slider...");
-    
-    const podcastItems = document.querySelectorAll('.podcast-item');
-    const podcastWidth = 560 + 24; // width + gap
-    const visiblePodcasts = 2; // Number of podcasts visible at once
-    
-    function movePodcastsSlide(direction) {
-      if (direction === 'next') {
-        const maxPosition = -podcastWidth * (podcastItems.length - visiblePodcasts);
-        podcastsPosition = Math.max(podcastsPosition - (podcastWidth * visiblePodcasts), maxPosition);
-      } else {
-        podcastsPosition = Math.min(podcastsPosition + (podcastWidth * visiblePodcasts), 0);
-      }
-      
-      podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-      resetPodcastsAutoSlide();
-    }
-    
-    function startPodcastsAutoSlide() {
-      podcastsAutoSlide = setInterval(() => {
-        if (!isPodcastsDragging) { // Don't auto-slide while dragging
-          const maxPosition = -podcastWidth * (podcastItems.length - visiblePodcasts);
-          
-          if (podcastsPosition <= maxPosition) {
-            podcastsPosition = 0; // Reset to start
-          } else {
-            podcastsPosition = Math.max(podcastsPosition - (podcastWidth * visiblePodcasts), maxPosition);
-          }
-          
-          podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-        }
-      }, 3000); // 3 seconds
-    }
-    
-    function resetPodcastsAutoSlide() {
-      clearInterval(podcastsAutoSlide);
-      startPodcastsAutoSlide();
-    }
-
-    // Touch events for Podcasts
-    function handlePodcastsTouchStart(e) {
-      isPodcastsDragging = true;
-      podcastsStartX = getPositionX(e);
-      podcastsTrack.style.transition = 'none';
-      resetPodcastsAutoSlide();
-      e.preventDefault();
-    }
-
-    function handlePodcastsTouchMove(e) {
-      if (!isPodcastsDragging) return;
-      
-      podcastsCurrentX = getPositionX(e);
-      const diff = podcastsCurrentX - podcastsStartX;
-      const newPosition = podcastsPosition + diff;
-      
-      // Calculate bounds
-      const maxPosition = 0;
-      const minPosition = -podcastWidth * (podcastItems.length - visiblePodcasts);
-      
-      // Apply bounds
-      if (newPosition > maxPosition) {
-        podcastsTrack.style.transform = `translateX(${maxPosition}px)`;
-      } else if (newPosition < minPosition) {
-        podcastsTrack.style.transform = `translateX(${minPosition}px)`;
-      } else {
-        podcastsTrack.style.transform = `translateX(${newPosition}px)`;
-      }
-      
-      e.preventDefault();
-    }
-
-    function handlePodcastsTouchEnd(e) {
-      if (!isPodcastsDragging) return;
-      
-      isPodcastsDragging = false;
-      podcastsTrack.style.transition = 'transform 0.3s ease';
-      
-      const diff = podcastsCurrentX - podcastsStartX;
-      const swipeThreshold = 50; // Minimum swipe distance
-      
-      if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-          // Swiped right - go to previous
-          movePodcastsSlide('prev');
-        } else {
-          // Swiped left - go to next
-          movePodcastsSlide('next');
-        }
-      } else {
-        // Not enough swipe, return to current position
-        podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-      }
-    }
-    
-    // Event Listeners for Podcasts
-    podcastsPrev.addEventListener('click', () => {
-      console.log("Podcasts previous clicked");
-      movePodcastsSlide('prev');
+    initSlider({
+      track: podcastsTrack,
+      prevBtn: podcastsPrev,
+      nextBtn: podcastsNext,
+      container: podcastsContainer,
+      itemSelector: '.podcast-item',
+      itemWidth: 560,
+      gap: 24,
+      visibleItems: { desktop: 2, tablet: 1, mobile: 1 }
     });
-    
-    podcastsNext.addEventListener('click', () => {
-      console.log("Podcasts next clicked");
-      movePodcastsSlide('next');
-    });
-    
-    // Touch events for Podcasts
-    podcastsTrack.addEventListener('touchstart', handlePodcastsTouchStart, { passive: false });
-    podcastsTrack.addEventListener('touchmove', handlePodcastsTouchMove, { passive: false });
-    podcastsTrack.addEventListener('touchend', handlePodcastsTouchEnd);
-    
-    // Mouse events for desktop
-    podcastsTrack.addEventListener('mousedown', handlePodcastsTouchStart);
-    document.addEventListener('mousemove', handlePodcastsTouchMove);
-    document.addEventListener('mouseup', handlePodcastsTouchEnd);
-    
-    // Initialize position and start auto-slide
-    podcastsTrack.style.transform = `translateX(${podcastsPosition}px)`;
-    startPodcastsAutoSlide();
-  } else {
-    console.log("Podcasts slider elements not found");
+  }
+}
+
+function initSlider(config) {
+  const {
+    track,
+    prevBtn,
+    nextBtn,
+    container,
+    itemSelector,
+    itemWidth,
+    gap,
+    visibleItems
+  } = config;
+  
+  const items = track.querySelectorAll(itemSelector);
+  let position = 0;
+  let autoSlideInterval;
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+  let prevTranslate = 0;
+  
+  // Get visible items count based on screen size
+  function getVisibleItems() {
+    if (window.innerWidth <= 768) {
+      return visibleItems.mobile;
+    } else if (window.innerWidth <= 1024) {
+      return visibleItems.tablet;
+    } else {
+      return visibleItems.desktop;
+    }
   }
   
-  // Helper function to get position
-  function getPositionX(e) {
+  // Calculate item width with gap
+  function getItemWidth() {
+    return itemWidth + gap;
+  }
+  
+  // Calculate maximum position - FIXED CALCULATION
+  function getMaxPosition() {
+    const visible = getVisibleItems();
+    const itemFullWidth = getItemWidth();
+    const trackWidth = track.scrollWidth;
+    const containerWidth = container ? container.offsetWidth : window.innerWidth;
+    
+    // Maximum position is when the last item aligns with the right edge
+    const maxPosition = -(trackWidth - containerWidth);
+    
+    // Ensure we don't go beyond the content
+    return Math.min(maxPosition, 0);
+  }
+  
+  // Check if we can move to next/prev
+  function canMoveNext() {
+    const maxPosition = getMaxPosition();
+    return position > maxPosition;
+  }
+  
+  function canMovePrev() {
+    return position < 0;
+  }
+  
+  // Move slide
+  function moveSlide(direction) {
+    const visible = getVisibleItems();
+    const itemFullWidth = getItemWidth();
+    const maxPosition = getMaxPosition();
+    
+    if (direction === 'next' && canMoveNext()) {
+      position = Math.max(position - (itemFullWidth * visible), maxPosition);
+    } else if (direction === 'prev' && canMovePrev()) {
+      position = Math.min(position + (itemFullWidth * visible), 0);
+    }
+    
+    // If we're at the end and trying to go next, loop to start
+    if (direction === 'next' && !canMoveNext()) {
+      position = 0; // Loop to start
+    }
+    // If we're at the start and trying to go prev, loop to end
+    else if (direction === 'prev' && !canMovePrev()) {
+      position = maxPosition; // Loop to end
+    }
+    
+    updateTrackPosition();
+    prevTranslate = position;
+    resetAutoSlide();
+  }
+  
+  // Update track position
+  function updateTrackPosition() {
+    track.style.transform = `translateX(${position}px)`;
+  }
+  
+  // Start auto slide
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+      if (!isDragging) {
+        const maxPosition = getMaxPosition();
+        
+        // If at the end, loop to start
+        if (position <= maxPosition) {
+          position = 0;
+        } else {
+          // Move to next slide
+          const visible = getVisibleItems();
+          const itemFullWidth = getItemWidth();
+          position = Math.max(position - (itemFullWidth * visible), maxPosition);
+        }
+        
+        updateTrackPosition();
+        prevTranslate = position;
+      }
+    }, 3000);
+  }
+  
+  // Reset auto slide timer
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+  
+  // Touch start handler
+  function handleTouchStart(e) {
+    isDragging = true;
+    startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+    track.style.transition = 'none';
+    resetAutoSlide();
+    
     if (e.type.includes('touch')) {
-      return e.touches[0].clientX;
-    } else {
-      return e.clientX;
+      e.preventDefault();
     }
   }
+  
+  // Touch move handler
+  function handleTouchMove(e) {
+    if (!isDragging) return;
+    
+    currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+    const diff = currentX - startX;
+    position = prevTranslate + diff;
+    
+    // Apply bounds
+    const maxPosition = getMaxPosition();
+    
+    if (position > 0) {
+      position = 0;
+    } else if (position < maxPosition) {
+      position = maxPosition;
+    }
+    
+    updateTrackPosition();
+    
+    if (e.type.includes('touch')) {
+      e.preventDefault();
+    }
+  }
+  
+  // Touch end handler
+  function handleTouchEnd() {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    track.style.transition = 'transform 0.3s ease';
+    
+    const diff = currentX - startX;
+    const swipeThreshold = 50;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0 && canMovePrev()) {
+        moveSlide('prev');
+      } else if (diff < 0 && canMoveNext()) {
+        moveSlide('next');
+      } else {
+        // Return to original position if can't move in that direction
+        position = prevTranslate;
+        updateTrackPosition();
+      }
+    } else {
+      // Return to original position
+      position = prevTranslate;
+      updateTrackPosition();
+    }
+  }
+  
+  // Update button states
+  function updateButtonStates() {
+    const maxPosition = getMaxPosition();
+    
+    // Disable buttons when at boundaries (optional - for better UX)
+    if (prevBtn && nextBtn) {
+      prevBtn.style.opacity = position < 0 ? '1' : '0.5';
+      nextBtn.style.opacity = position > maxPosition ? '1' : '0.5';
+    }
+  }
+  
+  // Event listeners for buttons
+  prevBtn.addEventListener('click', () => moveSlide('prev'));
+  nextBtn.addEventListener('click', () => moveSlide('next'));
+  
+  // Mouse events
+  track.addEventListener('mousedown', handleTouchStart);
+  document.addEventListener('mousemove', handleTouchMove);
+  document.addEventListener('mouseup', handleTouchEnd);
+  
+  // Touch events
+  track.addEventListener('touchstart', handleTouchStart, { passive: false });
+  track.addEventListener('touchmove', handleTouchMove, { passive: false });
+  track.addEventListener('touchend', handleTouchEnd);
+  
+  // Prevent drag image on track
+  track.addEventListener('dragstart', (e) => {
+    e.preventDefault();
+  });
+  
+  // Initialize
+  updateTrackPosition();
+  prevTranslate = position;
+  startAutoSlide();
+  updateButtonStates();
+  
+  // Update button states when position changes
+  const observer = new MutationObserver(updateButtonStates);
+  observer.observe(track, { attributes: true, attributeFilter: ['style'] });
+  
+  // Handle resize
+  window.addEventListener('resize', () => {
+    const maxPosition = getMaxPosition();
+    
+    // Adjust position if it's beyond new bounds after resize
+    if (position < maxPosition) {
+      position = maxPosition;
+    }
+    
+    updateTrackPosition();
+    prevTranslate = position;
+    updateButtonStates();
+  });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOM loaded - initializing social media sliders");
+  initSocialMediaSliders();
+});
+
+// Fallback initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSocialMediaSliders);
+} else {
+  setTimeout(initSocialMediaSliders, 100);
 }
 
 // Initialize everything when DOM is fully loaded
