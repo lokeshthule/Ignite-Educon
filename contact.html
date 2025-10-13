@@ -142,22 +142,28 @@
 <body>
 
   <!-- NAVBAR (external CSS) -->
-  <nav class="navbar">
-    <div class="logo-container">
-      <div class="logo-circle">IE</div>
-      <span class="logo-text">Ignite Educon</span>
-    </div>
-    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-    <ul class="nav-links">
-      <li><a href="index.html#hero">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="index.html#programs">Our Services</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
-      <li><a href="counselling.html">Counselling</a></li>
-    </ul>
-  </nav>
+  <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <span>IE</span>
+                </div>
+                <span class="logo-text">Ignite Educon</span>
+            </div>
+            <button class="hamburger" id="hamburger" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html#hero">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#programs">Our Services</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="counselling.html">Counselling</a></li>
+            </ul>
+        </nav>
+        <div class="menu-overlay"></div>
+    </header>
+  
 
   <!-- CONTACT SECTION -->
   <section class="contact-section">
@@ -264,12 +270,7 @@
 
   <!-- JS -->
   <script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
-
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
+   
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbyLL7PM6xnGU2eMcx7DYENqgn46mObh55C-UDaPDl5XhKTq8NYxwVdUjm7pKv7J72hf/exec";
     document.getElementById("contactForm").addEventListener("submit", e => {
@@ -290,5 +291,6 @@
       .catch(err => alert("Error: " + err.message));
     });
   </script>
+<script src="script.js"></script>
 </body>
 </html>
