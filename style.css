@@ -182,27 +182,26 @@ h2, h3 {
   }
 
   /* saffron underline animation centered under each link */
-  /* Make links “touch-friendly” */
-.nav-links li a {
-  -webkit-tap-highlight-color: transparent; /* removes default highlight */
-  position: relative; 
+  .nav-links li a {
+  position: relative;
   display: inline-block;
   text-decoration: none;
   color: #004aad;
   font-size: 1.25rem;
   font-weight: 500;
   padding: 0.8rem 1rem;
-  transition: color 0.22s ease; 
+  transition: color 0.22s ease;
+  -webkit-tap-highlight-color: transparent; /* remove default mobile highlight */
 }
 
-/* Underline for hover and touch */
+/* Underline element */
 .nav-links li a::after {
   content: "";
   position: absolute;
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-  width: 0;
+  width: 0; /* start hidden */
   height: 2px;
   background-color: #FF9933;
   transition: width 0.24s ease;
@@ -212,25 +211,30 @@ h2, h3 {
 .nav-links li a:hover::after {
   width: 60%;
 }
-
-/* Mobile touch */
-.nav-links li a:active::after {
-  width: 60%;
+.nav-links li a:hover {
+  color: #FF9933;
 }
 
-.nav-links li a:active {
+/* Mobile touch devices */
+@media (hover: none) {
+  .nav-links li a:active::after {
+    width: 60%;
+  }
+  .nav-links li a:active {
+    color: #FF9933;
+  }
+}
+
+/* Optional: persistent active link (won’t block animation elsewhere) */
+.nav-links li a.active::after {
+  width: 60%;
+}
+.nav-links li a.active {
   color: #FF9933;
 }
 
 
-  /* Active link style */
-  .nav-links li a.active {
-    color: #FF9933;
-  }
-
-  .nav-links li a.active::after {
-    width: 60%;
-  }
+  
 }
 
 
