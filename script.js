@@ -802,6 +802,8 @@ window.addEventListener("resize", setEqualCardHeight);
   }
 
   // Animate elements on scroll
+  let lineShown = false; // ensure line only appears once
+
   function animateOnScroll() {
     planCards.forEach((card, index) => {
       if (isInViewport(card) && !card.classList.contains("animate")) {
@@ -831,6 +833,26 @@ window.addEventListener("resize", setEqualCardHeight);
          setTimeout(() => item.classList.add("animate"), index * 200);
      }
 });
+
+
+ // 🌟 Once all timeline items animate, fade in the vertical line
+  if (!lineShown) {
+    const allAnimated = [...timelineItems].every(item =>
+      item.classList.contains("animate")
+    );
+
+    if (allAnimated) {
+      const timeline = document.querySelector(".timeline");
+      if (timeline) {
+        // Wait slightly longer than your animation (0.6s) before showing line
+        setTimeout(() => {
+          timeline.style.setProperty("--line-opacity", "1");
+        }, 700); // (0.6s animation + 0.1s buffer)
+      }
+      lineShown = true;
+    }
+  }
+
 
   }
 
