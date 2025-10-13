@@ -1,21 +1,50 @@
-// --- Hamburger Menu Toggle (used on all pages) ---
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.querySelector(".nav-links");
+  const overlay = document.querySelector(".menu-overlay");
+  const links = document.querySelectorAll(".nav-links a");
 
-if (hamburger && navLinks) {
-  hamburger.addEventListener('click', (e) => {
-    e.preventDefault();
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('open');
+  if (!hamburger || !navLinks || !overlay) return;
+
+  const toggleMenu = () => {
+    const isActive = navLinks.classList.toggle("active");
+    hamburger.classList.toggle("open", isActive);
+    hamburger.classList.toggle("active", isActive);
+    overlay.classList.toggle("active", isActive);
+    document.body.classList.toggle("menu-open", isActive);
+  };
+
+  hamburger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMenu();
   });
 
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('active');
-      hamburger.classList.remove('open');
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+      hamburger.classList.remove("open", "active");
+      overlay.classList.remove("active");
+      document.body.classList.remove("menu-open");
     });
   });
-}
+
+  overlay.addEventListener("click", () => {
+    navLinks.classList.remove("active");
+    hamburger.classList.remove("open", "active");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      navLinks.classList.remove("active");
+      hamburger.classList.remove("open", "active");
+      overlay.classList.remove("active");
+      document.body.classList.remove("menu-open");
+    }
+  });
+});
+
 
 // --- Advisory Board Slideshow (for about.html) ---
 let slideIndex = 0;
