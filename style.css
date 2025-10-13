@@ -107,22 +107,25 @@ h2, h3 {
   color: #FF9933; /* saffron on hover/active */
   background: none;
 }
-
-/* Hamburger button */
+/* --- HAMBURGER BUTTON --- */
 .hamburger {
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #011F5B;
   cursor: pointer;
+  z-index: 1100; /* stays above overlay and menu */
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.hamburger.open i:before {
-  content: "\f00d";
+/* Animate hamburger to X when open */
+.hamburger.open i::before {
+  content: "\f00d"; /* Font Awesome X icon */
+  transition: all 0.3s ease;
 }
 
-/* --- Mobile view (Large box below navbar, curves on left only) --- */
+/* --- MOBILE STYLING --- */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -130,44 +133,41 @@ h2, h3 {
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
-    font-size: 26px;
+    font-size: 28px;
     color: var(--blue);
-    z-index: 1001; /* make sure it stays above nav */
   }
 
+  /* NAV MENU */
   .nav-links {
-  position: fixed;
-  top: 72px;             /* start right below navbar */
-  right: -60%;            /* hidden completely */
-  width: 60%;             
-  height: 50%;           
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2rem;
-  border-radius: 0 0 0 30px; /* only bottom-left curve */
-  border: none;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-  transition: right 0.32s cubic-bezier(.2,.9,.3,1);
-  z-index: 1000;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
+    position: fixed;
+    top: 70px;
+    right: -70%;
+    width: 65%;
+    height: 55%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-radius: 0 0 0 30px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    transition: right 0.35s cubic-bezier(0.25, 1, 0.3, 1);
+    z-index: 1000;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 
-.nav-links.active {
-  right: 0;  /* slides in when active */
-}
+  .nav-links.active {
+    right: 0;
+  }
 
-
-
+  /* NAV LINKS */
   .nav-links li {
     width: 100%;
     text-align: center;
-    margin: 0;
   }
 
   .nav-links li a {
@@ -175,67 +175,98 @@ h2, h3 {
     display: inline-block;
     text-decoration: none;
     color: #004aad;
-    font-size: 1.25rem;       /* larger font for bigger box */
+    font-size: 1.25rem;
     font-weight: 500;
-    padding: 0.8rem 1rem;     /* more padding */
-    transition: color 0.22s ease;
+    padding: 0.8rem 1rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* saffron underline animation centered under each link */
-  .nav-links li a {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-  color: #004aad;
-  font-size: 1.25rem;
-  font-weight: 500;
-  padding: 0.8rem 1rem;
-  transition: color 0.22s ease;
-  -webkit-tap-highlight-color: transparent; /* remove default mobile highlight */
-}
+  .nav-links li a:hover {
+    color: #FF9933;
+    transform: translateY(-2px);
+  }
 
-/* Underline element */
-.nav-links li a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 0; /* start hidden */
-  height: 2px;
-  background-color: #FF9933;
-  transition: width 0.24s ease;
-}
+  /* Underline animation */
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #FF9933;
+    transition: width 0.25s ease;
+  }
 
-/* Desktop hover */
-.nav-links li a:hover::after {
-  width: 60%;
-}
-.nav-links li a:hover {
-  color: #FF9933;
-}
-
-/* Mobile touch devices */
-@media (hover: none) {
-  .nav-links li a:active::after {
+  .nav-links li a:hover::after {
     width: 60%;
   }
-  .nav-links li a:active {
+
+  /* Touch devices */
+  @media (hover: none) {
+    .nav-links li a:active::after {
+      width: 60%;
+    }
+    .nav-links li a:active {
+      color: #FF9933;
+    }
+  }
+
+  /* Background overlay */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Highlight hamburger when menu open */
+  .hamburger.active {
+    color: #FF9933;
+    transform: rotate(90deg);
+  }
+
+  /* Persistent active link */
+  .nav-links li a.active {
     color: #FF9933;
   }
+
+  .nav-links li a.active::after {
+    width: 60%;
+  }
+}
+/* --- Animated menu items --- */
+@media (max-width: 768px) {
+  .nav-links li {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  /* Animate links one by one when menu is active */
+  .nav-links.active li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Optional: stagger animation delay */
+  .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
+  .nav-links.active li:nth-child(2) { transition-delay: 0.2s; }
+  .nav-links.active li:nth-child(3) { transition-delay: 0.3s; }
+  .nav-links.active li:nth-child(4) { transition-delay: 0.4s; }
+  .nav-links.active li:nth-child(5) { transition-delay: 0.5s; }
 }
 
-/* Optional: persistent active link (won’t block animation elsewhere) */
-.nav-links li a.active::after {
-  width: 60%;
-}
-.nav-links li a.active {
-  color: #FF9933;
-}
-
-
-  
-}
 
 
 
