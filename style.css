@@ -143,19 +143,19 @@ h2, h3 {
     top: 70px;
     right: -70%;
     width: 65%;
-    height: 55%;
+    height: auto;               /* auto height based on content */
     background: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1.5rem;
-    padding: 2rem;
+    padding: 2rem 1rem;
     border-radius: 0 0 0 30px;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
     transition: right 0.35s cubic-bezier(0.25, 1, 0.3, 1);
     z-index: 1000;
-    overflow: hidden;
+    overflow-y: visible;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
@@ -164,12 +164,22 @@ h2, h3 {
     right: 0;
   }
 
-  /* NAV LINKS */
+  /* NAV LINKS animation */
   .nav-links li {
     width: 100%;
     text-align: center;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: calc(var(--i) * 0.1s); /* dynamic delay based on index */
   }
 
+  .nav-links.active li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* NAV LINKS anchor styling */
   .nav-links li a {
     position: relative;
     display: inline-block;
@@ -187,7 +197,6 @@ h2, h3 {
     transform: translateY(-2px);
   }
 
-  /* Underline animation */
   .nav-links li a::after {
     content: "";
     position: absolute;
@@ -206,12 +215,8 @@ h2, h3 {
 
   /* Touch devices */
   @media (hover: none) {
-    .nav-links li a:active::after {
-      width: 60%;
-    }
-    .nav-links li a:active {
-      color: #FF9933;
-    }
+    .nav-links li a:active::after { width: 60%; }
+    .nav-links li a:active { color: #FF9933; }
   }
 
   /* Background overlay */
@@ -245,27 +250,7 @@ h2, h3 {
     width: 60%;
   }
 }
-/* --- Animated menu items --- */
-@media (max-width: 768px) {
-  .nav-links li {
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
 
-  /* Animate links one by one when menu is active */
-  .nav-links.active li {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Optional: stagger animation delay */
-  .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
-  .nav-links.active li:nth-child(2) { transition-delay: 0.2s; }
-  .nav-links.active li:nth-child(3) { transition-delay: 0.3s; }
-  .nav-links.active li:nth-child(4) { transition-delay: 0.4s; }
-  .nav-links.active li:nth-child(5) { transition-delay: 0.5s; }
-}
 
 
 
@@ -783,13 +768,18 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 .timeline::before {
   content: '';
   position: absolute;
-  top: 50px;   /* adjust to match the dot center */
-  bottom:60px; /* so it ends at last dot */
+  top: 50px;
+  bottom: 60px;
   left: 30px;
   width: 4px;
-  background: #ddd;
+  background: #ff6b00;
   border-radius: 2px;
+  opacity: var(--line-opacity, 0); /* hidden at first */
+  transition: opacity 0.8s ease; /* fade in smoothly */
 }
+
+
+
 
 /* Each Timeline Item */
 .timeline-item {
