@@ -2640,6 +2640,7 @@ body {
         align-items: center;
     }
 }
+
 /* ===================== Experts / Team Section ===================== */
 .experts-section {
     padding: 60px 1rem;
@@ -2657,14 +2658,14 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
-    align-items: stretch; /* stretch cards to same height */
 }
 
 .expert-card {
-    flex: 1 1 300px; /* responsive */
+    flex: 1 1 280px;       /* responsive width */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     padding: 25px 15px;
     border-radius: 12px;
     background-color: #fff;
@@ -2676,25 +2677,26 @@ body {
     transform: translateY(-5px);
 }
 
+/* Expert Image */
 .expert-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
+    width: 120px;            /* fixed size */
+    height: 120px;
+    border-radius: 50%;      /* perfect circle */
+    margin-bottom: 20px;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #e0e0e0;
     border: 3px solid #FFAC1C;
+    display: block;          /* removes flex issues */
 }
 
 .expert-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;       /* crop and fit perfectly */
+    display: block;          /* prevents mobile collapse */
 }
 
+/* Expert Name & Title */
 .expert-name {
     font-size: 1.25rem;
     font-weight: bold;
@@ -2706,13 +2708,18 @@ body {
     color: #0d61aa;
 }
 
-
-/* ===================== Responsive ===================== */
+/* Responsive for small screens */
 @media (max-width: 768px) {
     .expert-card {
         max-width: 90%;
     }
+
+    .expert-avatar {
+        width: 100px;
+        height: 100px;
+    }
 }
+
 /* =====================  About & Counselling Animation ===================== */
 .plan-card,
 .counselling-points li,
