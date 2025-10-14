@@ -19,6 +19,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-y: scroll;
 }
 
 body {
@@ -26,6 +27,7 @@ body {
   line-height: 1.6;
   color: var(--text);
   background-color: #F0F8FF;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -57,6 +59,7 @@ h2, h3 {
   right: 0;
   z-index: 1000;
   font-family: poppins, sans-serif;
+  box-sizing: border-box;
 }
 
 .logo-container {
@@ -115,8 +118,8 @@ h2, h3 {
   font-size: 1.8rem;
   color: #011F5B;
   cursor: pointer;
-  z-index: 1100; /* stays above overlay and menu */
-  transition: transform 0.3s ease, color 0.3s ease;
+  z-index: 1100;
+  transition: color 0.3s ease; /* removed transform transition to avoid shifting */
 }
 
 /* Animate hamburger to X when open */
@@ -143,7 +146,7 @@ h2, h3 {
     top: 70px;
     right: -70%;
     width: 65%;
-    height: auto;               /* auto height based on content */
+    height: auto;
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -171,7 +174,7 @@ h2, h3 {
     opacity: 0;
     transform: translateY(15px);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    transition-delay: calc(var(--i) * 0.1s); /* dynamic delay based on index */
+    transition-delay: calc(var(--i) * 0.1s);
   }
 
   .nav-links.active li {
@@ -213,7 +216,6 @@ h2, h3 {
     width: 60%;
   }
 
-  /* Touch devices */
   @media (hover: none) {
     .nav-links li a:active::after { width: 60%; }
     .nav-links li a:active { color: #FF9933; }
@@ -235,10 +237,10 @@ h2, h3 {
     visibility: visible;
   }
 
-  /* Highlight hamburger when menu open */
+  /* Highlight hamburger when menu open (no rotation to keep stable) */
   .hamburger.active {
     color: #FF9933;
-    transform: rotate(90deg);
+    /* removed transform: rotate(90deg); */
   }
 
   /* Persistent active link */
@@ -250,8 +252,6 @@ h2, h3 {
     width: 60%;
   }
 }
-
-
 
 
 
