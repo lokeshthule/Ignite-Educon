@@ -137,7 +137,7 @@ function initHeroSlideshow() {
 }
 
 
-// ===== SOCIAL MEDIA SECTION - FIXED END POSITION =====
+// ===== SOCIAL MEDIA SECTION - 5 SECOND AUTO-SLIDE =====
 function initSocialMediaSliders() {
   console.log("Initializing social media sliders...");
   
@@ -163,7 +163,8 @@ function initSocialMediaSliders() {
       itemSelector: '.reel-item',
       itemWidth: 280,
       gap: 24,
-      visibleItems: { desktop: 4, tablet: 2, mobile: 1 }
+      visibleItems: { desktop: 4, tablet: 2, mobile: 1 },
+      autoSlideInterval: 5000 // 5 seconds
     });
   }
   
@@ -176,7 +177,8 @@ function initSocialMediaSliders() {
       itemSelector: '.podcast-item',
       itemWidth: 560,
       gap: 24,
-      visibleItems: { desktop: 2, tablet: 1, mobile: 1 }
+      visibleItems: { desktop: 2, tablet: 1, mobile: 1 },
+      autoSlideInterval: 5000 // 5 seconds
     });
   }
 }
@@ -190,12 +192,13 @@ function initSlider(config) {
     itemSelector,
     itemWidth,
     gap,
-    visibleItems
+    visibleItems,
+    autoSlideInterval = 5000 // Default to 5 seconds
   } = config;
   
   const items = track.querySelectorAll(itemSelector);
   let position = 0;
-  let autoSlideInterval;
+  let autoSlideTimer;
   let isDragging = false;
   let startX = 0;
   let currentX = 0;
@@ -217,7 +220,7 @@ function initSlider(config) {
     return itemWidth + gap;
   }
   
-  // Calculate maximum position - FIXED CALCULATION
+  // Calculate maximum position
   function getMaxPosition() {
     const visible = getVisibleItems();
     const itemFullWidth = getItemWidth();
@@ -272,9 +275,9 @@ function initSlider(config) {
     track.style.transform = `translateX(${position}px)`;
   }
   
-  // Start auto slide
+  // Start auto slide - UPDATED TO 5 SECONDS
   function startAutoSlide() {
-    autoSlideInterval = setInterval(() => {
+    autoSlideTimer = setInterval(() => {
       if (!isDragging) {
         const maxPosition = getMaxPosition();
         
@@ -291,12 +294,12 @@ function initSlider(config) {
         updateTrackPosition();
         prevTranslate = position;
       }
-    }, 3000);
+    }, autoSlideInterval); // Use the configured interval (5000ms = 5 seconds)
   }
   
   // Reset auto slide timer
   function resetAutoSlide() {
-    clearInterval(autoSlideInterval);
+    clearInterval(autoSlideTimer);
     startAutoSlide();
   }
   
@@ -420,7 +423,7 @@ function initSlider(config) {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM loaded - initializing social media sliders");
+  console.log("DOM loaded - initializing social media sliders with 5-second intervals");
   initSocialMediaSliders();
 });
 
