@@ -1124,7 +1124,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   max-width: 1200px;
   margin: 0 auto;
   overflow: hidden;
-  padding: 3rem 3rem;
+  padding: 1rem 3rem;
 }
 
 .reels-track,
@@ -1133,6 +1133,12 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   transition: transform 0.5s ease;
   gap: 1.5rem;
   will-change: transform;
+  cursor: grab;
+}
+
+.reels-track:active,
+.podcasts-track:active {
+  cursor: grabbing;
 }
 
 /* Reel Item - 9:16 Ratio */
@@ -1146,6 +1152,7 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   transition: all 0.3s ease;
   position: relative;
   background: #000;
+  user-select: none;
 }
 
 .reel-item:hover {
@@ -1160,11 +1167,11 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   background: #000;
+  user-select: none;
 }
 
 .podcast-item:hover {
@@ -1180,6 +1187,12 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   border: none;
   border-radius: 12px;
   display: block;
+  pointer-events: none;
+}
+
+.reels-track:hover .reel-item iframe,
+.podcasts-track:hover .podcast-item iframe {
+  pointer-events: auto;
 }
 
 /* YouTube embedded video styling */
@@ -1210,14 +1223,12 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s ease;
-  /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);*/
   color: #CC5500;
   font-size: 1.2rem;
 }
 
 .slide-btn:hover {
   background: transparent;
-  /*box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);*/
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -1283,56 +1294,6 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
     flex: 0 0 250px;
     height: 141px;
   }
-}
-/* Social Media Section Touch Improvements */
-.reels-container,
-.podcasts-container {
-  position: relative;
-  overflow: hidden;
-  touch-action: pan-y;
-}
-
-.reels-track,
-.podcasts-track {
-  display: flex;
-  transition: transform 0.3s ease;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  will-change: transform;
-}
-
-.reels-track:active,
-.podcasts-track:active {
-  cursor: grabbing;
-}
-
-.reel-item,
-.podcast-item {
-  flex-shrink: 0;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-/* Ensure iframes don't interfere with touch */
-.reel-item iframe,
-.podcast-item iframe {
-  pointer-events: none;
-}
-
-.reels-track:hover .reel-item iframe,
-.podcasts-track:hover .podcast-item iframe {
-  pointer-events: auto;
-}
-
-/* Slide buttons styling */
-.slide-btn {
-  z-index: 20;
-  pointer-events: auto;
 }
 
 

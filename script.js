@@ -166,293 +166,190 @@ function initHeroSlideshow() {
 }
 
 
-// ===== SOCIAL MEDIA SECTION - 5 SECOND AUTO-SLIDE =====
+// --- Social Media Section Slider with Swipe and Buttons ---
 function initSocialMediaSliders() {
-  console.log("Initializing social media sliders...");
+  console.log("Initializing social media sliders with swipe functionality and buttons...");
   
   // Reels Slider
-  const reelsContainer = document.querySelector('.reels-container');
   const reelsTrack = document.querySelector('.reels-track');
   const reelsPrev = document.querySelector('.reels-prev');
   const reelsNext = document.querySelector('.reels-next');
   
   // Podcasts Slider
-  const podcastsContainer = document.querySelector('.podcasts-container');
-  const podcastsTrack = document.querySelector('.podcasts-track');
+  const podcastTrack = document.querySelector('.podcasts-track');
   const podcastsPrev = document.querySelector('.podcasts-prev');
   const podcastsNext = document.querySelector('.podcasts-next');
   
   // Initialize if elements exist
   if (reelsTrack && reelsPrev && reelsNext) {
-    initSlider({
+    initSocialSlider({
       track: reelsTrack,
       prevBtn: reelsPrev,
       nextBtn: reelsNext,
-      container: reelsContainer,
       itemSelector: '.reel-item',
       itemWidth: 280,
       gap: 24,
-      visibleItems: { desktop: 4, tablet: 2, mobile: 1 },
-      autoSlideInterval: 5000 // 5 seconds
+      visibleItems: { desktop: 4, tablet: 2, mobile: 1 }
     });
   }
   
-  if (podcastsTrack && podcastsPrev && podcastsNext) {
-    initSlider({
-      track: podcastsTrack,
+  if (podcastTrack && podcastsPrev && podcastsNext) {
+    initSocialSlider({
+      track: podcastTrack,
       prevBtn: podcastsPrev,
       nextBtn: podcastsNext,
-      container: podcastsContainer,
       itemSelector: '.podcast-item',
       itemWidth: 560,
       gap: 24,
-      visibleItems: { desktop: 2, tablet: 1, mobile: 1 },
-      autoSlideInterval: 5000 // 5 seconds
+      visibleItems: { desktop: 2, tablet: 1, mobile: 1 }
     });
   }
 }
 
-function initSlider(config) {
+function initSocialSlider(config) {
   const {
     track,
     prevBtn,
     nextBtn,
-    container,
     itemSelector,
     itemWidth,
     gap,
-    visibleItems,
-    autoSlideInterval = 5000 // Default to 5 seconds
+    visibleItems
   } = config;
   
-  const items = track.querySelectorAll(itemSelector);
   let position = 0;
-  let autoSlideTimer;
   let isDragging = false;
-  let startX = 0;
-  let currentX = 0;
+  let startPos = 0;
   let prevTranslate = 0;
   
-  // Get visible items count based on screen size
-  function getVisibleItems() {
-    if (window.innerWidth <= 768) {
-      return visibleItems.mobile;
+  const items = track.querySelectorAll(itemSelector);
+  let visibleCount = 3;
+  let itemFullWidth = 0;
+
+  function updateSliderSettings() {
+    if (window.innerWidth <= 480) {
+      visibleCount = visibleItems.mobile;
+      itemFullWidth = items[0].offsetWidth + 20;
+    } else if (window.innerWidth <= 768) {
+      visibleCount = visibleItems.tablet;
+      itemFullWidth = items[0].offsetWidth + 32;
     } else if (window.innerWidth <= 1024) {
-      return visibleItems.tablet;
+      visibleCount = visibleItems.desktop;
+      itemFullWidth = items[0].offsetWidth + 32;
     } else {
-      return visibleItems.desktop;
+      visibleCount = visibleItems.desktop;
+      itemFullWidth = items[0].offsetWidth + 32;
     }
   }
-  
-  // Calculate item width with gap
-  function getItemWidth() {
-    return itemWidth + gap;
-  }
-  
-  // Calculate maximum position
-  function getMaxPosition() {
-    const visible = getVisibleItems();
-    const itemFullWidth = getItemWidth();
-    const trackWidth = track.scrollWidth;
-    const containerWidth = container ? container.offsetWidth : window.innerWidth;
-    
-    // Maximum position is when the last item aligns with the right edge
-    const maxPosition = -(trackWidth - containerWidth);
-    
-    // Ensure we don't go beyond the content
-    return Math.min(maxPosition, 0);
-  }
-  
-  // Check if we can move to next/prev
-  function canMoveNext() {
-    const maxPosition = getMaxPosition();
-    return position > maxPosition;
-  }
-  
-  function canMovePrev() {
-    return position < 0;
-  }
-  
-  // Move slide
+
   function moveSlide(direction) {
-    const visible = getVisibleItems();
-    const itemFullWidth = getItemWidth();
-    const maxPosition = getMaxPosition();
+    updateSliderSettings();
+    const maxPosition = -itemFullWidth * (items.length - visibleCount);
     
-    if (direction === 'next' && canMoveNext()) {
-      position = Math.max(position - (itemFullWidth * visible), maxPosition);
-    } else if (direction === 'prev' && canMovePrev()) {
-      position = Math.min(position + (itemFullWidth * visible), 0);
-    }
-    
-    // If we're at the end and trying to go next, loop to start
-    if (direction === 'next' && !canMoveNext()) {
-      position = 0; // Loop to start
-    }
-    // If we're at the start and trying to go prev, loop to end
-    else if (direction === 'prev' && !canMovePrev()) {
-      position = maxPosition; // Loop to end
-    }
-    
-    updateTrackPosition();
-    prevTranslate = position;
-    resetAutoSlide();
-  }
-  
-  // Update track position
-  function updateTrackPosition() {
-    track.style.transform = `translateX(${position}px)`;
-  }
-  
-  // Start auto slide - UPDATED TO 5 SECONDS
-  function startAutoSlide() {
-    autoSlideTimer = setInterval(() => {
-      if (!isDragging) {
-        const maxPosition = getMaxPosition();
-        
-        // If at the end, loop to start
-        if (position <= maxPosition) {
-          position = 0;
-        } else {
-          // Move to next slide
-          const visible = getVisibleItems();
-          const itemFullWidth = getItemWidth();
-          position = Math.max(position - (itemFullWidth * visible), maxPosition);
-        }
-        
-        updateTrackPosition();
-        prevTranslate = position;
-      }
-    }, autoSlideInterval); // Use the configured interval (5000ms = 5 seconds)
-  }
-  
-  // Reset auto slide timer
-  function resetAutoSlide() {
-    clearInterval(autoSlideTimer);
-    startAutoSlide();
-  }
-  
-  // Touch start handler
-  function handleTouchStart(e) {
-    isDragging = true;
-    startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-    track.style.transition = 'none';
-    resetAutoSlide();
-    
-    if (e.type.includes('touch')) {
-      e.preventDefault();
-    }
-  }
-  
-  // Touch move handler
-  function handleTouchMove(e) {
-    if (!isDragging) return;
-    
-    currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-    const diff = currentX - startX;
-    position = prevTranslate + diff;
-    
-    // Apply bounds
-    const maxPosition = getMaxPosition();
-    
-    if (position > 0) {
-      position = 0;
-    } else if (position < maxPosition) {
-      position = maxPosition;
-    }
-    
-    updateTrackPosition();
-    
-    if (e.type.includes('touch')) {
-      e.preventDefault();
-    }
-  }
-  
-  // Touch end handler
-  function handleTouchEnd() {
-    if (!isDragging) return;
-    
-    isDragging = false;
-    track.style.transition = 'transform 0.3s ease';
-    
-    const diff = currentX - startX;
-    const swipeThreshold = 50;
-    
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0 && canMovePrev()) {
-        moveSlide('prev');
-      } else if (diff < 0 && canMoveNext()) {
-        moveSlide('next');
-      } else {
-        // Return to original position if can't move in that direction
-        position = prevTranslate;
-        updateTrackPosition();
-      }
+    if (direction === 'next') {
+      position = Math.max(position - (itemFullWidth * visibleCount), maxPosition);
     } else {
-      // Return to original position
-      position = prevTranslate;
-      updateTrackPosition();
+      position = Math.min(position + (itemFullWidth * visibleCount), 0);
     }
-  }
-  
-  // Update button states
-  function updateButtonStates() {
-    const maxPosition = getMaxPosition();
     
-    // Disable buttons when at boundaries (optional - for better UX)
+    track.style.transform = `translateX(${position}px)`;
+    prevTranslate = position;
+    updateButtonStates();
+  }
+
+  function updateButtonStates() {
+    const maxPosition = -itemFullWidth * (items.length - visibleCount);
+    
+    // Disable buttons when at boundaries
     if (prevBtn && nextBtn) {
       prevBtn.style.opacity = position < 0 ? '1' : '0.5';
+      prevBtn.style.pointerEvents = position < 0 ? 'auto' : 'none';
+      
       nextBtn.style.opacity = position > maxPosition ? '1' : '0.5';
+      nextBtn.style.pointerEvents = position > maxPosition ? 'auto' : 'none';
     }
   }
-  
-  // Event listeners for buttons
-  prevBtn.addEventListener('click', () => moveSlide('prev'));
-  nextBtn.addEventListener('click', () => moveSlide('next'));
-  
-  // Mouse events
-  track.addEventListener('mousedown', handleTouchStart);
-  document.addEventListener('mousemove', handleTouchMove);
-  document.addEventListener('mouseup', handleTouchEnd);
-  
-  // Touch events
-  track.addEventListener('touchstart', handleTouchStart, { passive: false });
-  track.addEventListener('touchmove', handleTouchMove, { passive: false });
-  track.addEventListener('touchend', handleTouchEnd);
-  
-  // Prevent drag image on track
-  track.addEventListener('dragstart', (e) => {
-    e.preventDefault();
-  });
-  
-  // Initialize
-  updateTrackPosition();
-  prevTranslate = position;
-  startAutoSlide();
-  updateButtonStates();
-  
-  // Update button states when position changes
-  const observer = new MutationObserver(updateButtonStates);
-  observer.observe(track, { attributes: true, attributeFilter: ['style'] });
-  
-  // Handle resize
-  window.addEventListener('resize', () => {
-    const maxPosition = getMaxPosition();
+
+  // Touch/Mouse Events
+  function touchStart(e) {
+    isDragging = true;
+    startPos = getPositionX(e);
+    track.style.cursor = 'grabbing';
+    track.style.transition = 'none';
+  }
+
+  function touchMove(e) {
+    if (!isDragging) return;
+    const currentPosition = getPositionX(e);
+    const diff = currentPosition - startPos;
+    position = prevTranslate + diff;
+    track.style.transform = `translateX(${position}px)`;
+  }
+
+  function touchEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.cursor = 'grab';
+    track.style.transition = 'transform 0.5s ease';
     
-    // Adjust position if it's beyond new bounds after resize
-    if (position < maxPosition) {
-      position = maxPosition;
+    const movedBy = position - prevTranslate;
+    updateSliderSettings();
+    
+    if (movedBy < -50) {
+      // Swipe left - next
+      moveSlide('next');
+    } else if (movedBy > 50) {
+      // Swipe right - previous
+      moveSlide('prev');
+    } else {
+      // Return to original position
+      track.style.transform = `translateX(${prevTranslate}px)`;
+      position = prevTranslate;
     }
-    
-    updateTrackPosition();
-    prevTranslate = position;
+  }
+
+  function getPositionX(e) {
+    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  }
+
+  // Event Listeners for buttons
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => moveSlide('prev'));
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => moveSlide('next'));
+  }
+
+  // Event Listeners for touch and mouse
+  track.addEventListener('mousedown', touchStart);
+  track.addEventListener('touchstart', touchStart);
+  
+  track.addEventListener('mousemove', touchMove);
+  track.addEventListener('touchmove', touchMove);
+  
+  track.addEventListener('mouseup', touchEnd);
+  track.addEventListener('mouseleave', touchEnd);
+  track.addEventListener('touchend', touchEnd);
+
+  // Initialize
+  updateSliderSettings();
+  track.style.transform = `translateX(${position}px)`;
+  prevTranslate = position;
+  updateButtonStates();
+
+  // Update on resize
+  window.addEventListener('resize', () => {
+    updateSliderSettings();
+    position = 0;
+    prevTranslate = 0;
+    track.style.transform = `translateX(${position}px)`;
     updateButtonStates();
   });
 }
 
-// Initialize when DOM is loaded
+// Initialize sliders when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM loaded - initializing social media sliders with 5-second intervals");
   initSocialMediaSliders();
 });
 
