@@ -19,6 +19,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-y: scroll;
 }
 
 body {
@@ -26,6 +27,7 @@ body {
   line-height: 1.6;
   color: var(--text);
   background-color: #F0F8FF;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -57,6 +59,7 @@ h2, h3 {
   right: 0;
   z-index: 1000;
   font-family: poppins, sans-serif;
+  box-sizing: border-box;
 }
 
 .logo-container {
@@ -107,22 +110,25 @@ h2, h3 {
   color: #FF9933; /* saffron on hover/active */
   background: none;
 }
-
-/* Hamburger button */
+/* --- HAMBURGER BUTTON --- */
 .hamburger {
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #011F5B;
   cursor: pointer;
+  z-index: 1100;
+  transition: color 0.3s ease; /* removed transform transition to avoid shifting */
 }
 
-.hamburger.open i:before {
-  content: "\f00d";
+/* Animate hamburger to X when open */
+.hamburger.open i::before {
+  content: "\f00d"; /* Font Awesome X icon */
+  transition: all 0.3s ease;
 }
 
-/* --- Mobile view --- */
+/* --- MOBILE STYLING --- */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -130,63 +136,123 @@ h2, h3 {
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
-    font-size: 26px;
+    font-size: 28px;
     color: var(--blue);
   }
 
+  /* NAV MENU */
   .nav-links {
     position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 280px;
+    top: 70px;
+    right: -70%;
+    width: 65%;
+    height: auto;
     background: #fff;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
-    padding: 2rem 1.5rem;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-    transition: right 0.4s ease;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+    border-radius: 0 0 0 30px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    transition: right 0.35s cubic-bezier(0.25, 1, 0.3, 1);
     z-index: 1000;
+    overflow-y: visible;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .nav-links.active {
     right: 0;
-    border-radius: 10px;
   }
 
+  /* NAV LINKS animation */
   .nav-links li {
     width: 100%;
-    margin: 1rem 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: calc(var(--i) * 0.1s);
   }
 
+  .nav-links.active li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* NAV LINKS anchor styling */
   .nav-links li a {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    position: relative;
+    display: inline-block;
     text-decoration: none;
-    color: #004aad; /* mobile default color */
-    font-size: 1.1rem;
+    color: #004aad;
+    font-size: 1.25rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    border-bottom: 1px solid #f0f0f0;
-    transition: color 0.3s ease, background 0.3s ease;
+    padding: 0.8rem 1rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* Hover / tap effect for mobile */
-  .nav-links li a:hover,
-  .nav-links li a:focus,
-  .nav-links li a:active {
-    color: #FF9933; /* saffron */
-    background: none;
+  .nav-links li a:hover {
+    color: #FF9933;
+    transform: translateY(-2px);
   }
 
-  /* Active link (if you keep a class after click) */
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #FF9933;
+    transition: width 0.25s ease;
+  }
+
+  .nav-links li a:hover::after {
+    width: 60%;
+  }
+
+  @media (hover: none) {
+    .nav-links li a:active::after { width: 60%; }
+    .nav-links li a:active { color: #FF9933; }
+  }
+
+  /* Background overlay */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Highlight hamburger when menu open (no rotation to keep stable) */
+  .hamburger.active {
+    color: #FF9933;
+    /* removed transform: rotate(90deg); */
+  }
+
+  /* Persistent active link */
   .nav-links li a.active {
     color: #FF9933;
   }
+
+  .nav-links li a.active::after {
+    width: 60%;
+  }
 }
+
 
 
 /* Responsive Footer Centering */
@@ -702,13 +768,18 @@ background: radial-gradient(circle, rgba(238, 217, 174, 1) 0%, rgba(240, 248, 25
 .timeline::before {
   content: '';
   position: absolute;
-  top: 50px;   /* adjust to match the dot center */
-  bottom:60px; /* so it ends at last dot */
+  top: 50px;
+  bottom: 60px;
   left: 30px;
   width: 4px;
-  background: #ddd;
+  background: #ff6b00;
   border-radius: 2px;
+  opacity: var(--line-opacity, 0); /* hidden at first */
+  transition: opacity 0.8s ease; /* fade in smoothly */
 }
+
+
+
 
 /* Each Timeline Item */
 .timeline-item {
@@ -2569,6 +2640,7 @@ body {
         align-items: center;
     }
 }
+
 /* ===================== Experts / Team Section ===================== */
 .experts-section {
     padding: 60px 1rem;
@@ -2586,14 +2658,14 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
-    align-items: stretch; /* stretch cards to same height */
 }
 
 .expert-card {
-    flex: 1 1 300px; /* responsive */
+    flex: 1 1 280px;       /* responsive width */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     padding: 25px 15px;
     border-radius: 12px;
     background-color: #fff;
@@ -2605,25 +2677,26 @@ body {
     transform: translateY(-5px);
 }
 
+/* Expert Image */
 .expert-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
+    width: 120px;            /* fixed size */
+    height: 120px;
+    border-radius: 50%;      /* perfect circle */
+    margin-bottom: 20px;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #e0e0e0;
     border: 3px solid #FFAC1C;
+    display: block;          /* removes flex issues */
 }
 
 .expert-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;       /* crop and fit perfectly */
+    display: block;          /* prevents mobile collapse */
 }
 
+/* Expert Name & Title */
 .expert-name {
     font-size: 1.25rem;
     font-weight: bold;
@@ -2635,13 +2708,18 @@ body {
     color: #0d61aa;
 }
 
-
-/* ===================== Responsive ===================== */
+/* Responsive for small screens */
 @media (max-width: 768px) {
     .expert-card {
         max-width: 90%;
     }
+
+    .expert-avatar {
+        width: 100px;
+        height: 100px;
+    }
 }
+
 /* =====================  About & Counselling Animation ===================== */
 .plan-card,
 .counselling-points li,
